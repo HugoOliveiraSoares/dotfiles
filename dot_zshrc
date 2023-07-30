@@ -1,0 +1,82 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+
+setopt autocd
+bindkey -e
+
+# to customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# 
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+zstyle :compinstall filename '/home/hugo/.zshrc'
+
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autoswitch-virtualenv/autoswitch_virtualenv.plugin.zsh
+
+fpath=(~/.zsh/zsh-completions/src/ $fpath)
+
+export HISTFILE=~/.zsh_history
+export SAVEHIST=10000
+export HISTSIFE=10000
+
+# zsh-syntax-highlighting override configs
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#ff0000,bold'
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=blue,underline'
+
+
+# lvim
+export PATH=~/.cargo/bin:~/.local/bin:$PATH
+
+#export NVIM_APPNAME="${NVIM_APPNAME:-"lvim"}"
+
+export LUNARVIM_RUNTIME_DIR="${LUNARVIM_RUNTIME_DIR:-"/home/hugo/.local/share/lunarvim"}"
+export LUNARVIM_CONFIG_DIR="${LUNARVIM_CONFIG_DIR:-"/home/hugo/.config/lvim"}"
+export LUNARVIM_CACHE_DIR="${LUNARVIM_CACHE_DIR:-"/home/hugo/.cache/lvim"}"
+
+export LUNARVIM_BASE_DIR="${LUNARVIM_BASE_DIR:-"/home/hugo/.local/share/lunarvim/lvim"}"
+
+# zoxide
+eval "$(zoxide init zsh)"
+
+# smart tmux session
+export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
+
+# ALIAS
+
+alias lv='lvim'
+
+alias ssh='TERM=xterm-256color ssh'
+alias zshconf="lvim ~/.zshrc"
+
+# ls
+alias l='exa -l --icons --classify --git'
+alias ls='exa --icons --classify'
+alias ll='exa -lah --classify'
+alias la='exa -a --icons --classify'
+alias lt='exa -T --classify'
+
+# git
+alias gcl='git clone'
+alias gi='git init'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gs='git status'
+
+
+# asdf
+. $HOME/.asdf/asdf.sh
+fpath=(${ASDF_DIR}/completions $fpath)
+. ~/.asdf/plugins/java/set-java-home.zsh
+
+autoload -Uz compinit
+compinit
